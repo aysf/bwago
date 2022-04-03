@@ -11,8 +11,9 @@ go run cmd/web/*.go
 
 # 3rd party library
 
-- Chi Route (https://github.com/go-chi/chi)
-- Justinas nosurf (https://github.com/justinas/nosurf)
+- Chi Route (github.com/go-chi/chi)
+- Justinas nosurf (github.com/justinas/nosurf)
+- Alexedwards scs (github.com/alexedwards/scs)
 
 # Motivation
 

@@ -4,8 +4,12 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <h1>About page</h1>
+                <h1>About page :)</h1>
+                <p>take data from string map</p>
+                <p>my hobby is {{index .StringMap "hobby"}}</p>
+                <p>take data from struct</p>
+                <p>my name is {{index .Data "satu" .Nama}}  </p>
             </div>
-        </div>
+        </div> 
     </div>
 {{end}}

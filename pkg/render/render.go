@@ -6,10 +6,12 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+
+	"github.com/aysf/bwago/pkg/models"
 )
 
 // RenderTemplate renders template using html/template
-func RenderTemplate(rw http.ResponseWriter, tmpl string) error {
+func RenderTemplate(rw http.ResponseWriter, tmpl string, td *models.TemplateData) error {
 
 	tc, _ := CreateTemplateCache()
 
@@ -19,7 +21,7 @@ func RenderTemplate(rw http.ResponseWriter, tmpl string) error {
 	}
 
 	buf := new(bytes.Buffer)
-	rt.Execute(buf, nil)
+	rt.Execute(buf, td)
 	_, err := buf.WriteTo(rw)
 	if err != nil {
 		return err

@@ -7,13 +7,27 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/aysf/bwago/pkg/config"
 	"github.com/aysf/bwago/pkg/models"
 )
+
+var app *config.AppConfig
+
+func NewTemplates(a *config.AppConfig) {
+	app = a
+}
 
 // RenderTemplate renders template using html/template
 func RenderTemplate(rw http.ResponseWriter, tmpl string, td *models.TemplateData) error {
 
-	tc, _ := CreateTemplateCache()
+	var tc map[string]*template.Template
+	if app.UseCache {
+		// get the template cache from the app config
+		tc = app.TemplateCache
+	} else {
+		// create template cache
+		tc, _ = CreateTemplateCache()
+	}
 
 	rt, ok := tc[tmpl]
 	if !ok {

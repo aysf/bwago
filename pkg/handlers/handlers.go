@@ -7,10 +7,12 @@ import (
 	"github.com/aysf/bwago/pkg/render"
 )
 
+// Home handles home page
 func Home(rw http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(rw, "home.page.tmpl", &models.TemplateData{})
 }
 
+// About handles about page
 func About(rw http.ResponseWriter, r *http.Request) {
 
 	// peform some logic

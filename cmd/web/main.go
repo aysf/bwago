@@ -3,16 +3,32 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 
+	"github.com/alexedwards/scs/v2"
 	"github.com/aysf/bwago/pkg/config"
+	"github.com/aysf/bwago/pkg/handlers"
 	"github.com/aysf/bwago/pkg/render"
 )
 
-var portNumber = ":8080"
+const portNumber = ":8080"
 
+var app config.AppConfig
+var session *scs.SessionManager
+
+// main is the main application funcion
 func main() {
 
-	var app config.AppConfig
+	// change this to true when in production
+	app.InProduction = false
+
+	session = scs.New()
+	session.Lifetime = 24 * time.Hour
+	session.Cookie.Persist = true
+	session.Cookie.SameSite = http.SameSiteLaxMode
+	session.Cookie.Secure = app.InProduction
+
+	app.Session = session
 
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
@@ -21,6 +37,9 @@ func main() {
 
 	app.TemplateCache = tc
 	app.UseCache = true
+
+	Repo := handlers.NewRepo(&app)
+	handlers.NewHandlers(Repo)
 
 	render.NewTemplates(&app)
 
@@ -39,6 +58,8 @@ func main() {
 		Handler: routes(&app),
 	}
 
-	server.ListenAndServe()
-	log.Fatal(err)
+	err = server.ListenAndServe()
+	if err != nil {
+		log.Fatal(err)
+	}
 }

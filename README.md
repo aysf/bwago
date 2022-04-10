@@ -11,9 +11,9 @@ go run cmd/web/*.go
 
 # 3rd party library
 
-- [Chi Route](github.com/go-chi/chi)
-- [Justinas nosurf](github.com/justinas/nosurf)
-- Session package [Alexedwards scs](github.com/alexedwards/scs)
+- [Chi Route](https://github.com/go-chi/chi)
+- [Justinas nosurf](https://github.com/justinas/nosurf)
+- Session package [Alexedwards scs](https://github.com/alexedwards/scs)
 - Popup Message [sweetalert2](https://github.com/sweetalert2/sweetalert2) 
 - Notification [Notie](https://jaredreich.com/notie/)
 - [vanilajs-datepicker](https://mymth.github.io/vanillajs-datepicker/#/)

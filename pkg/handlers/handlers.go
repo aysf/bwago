@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/aysf/bwago/pkg/config"
@@ -33,7 +34,7 @@ func (m *Repository) Home(rw http.ResponseWriter, r *http.Request) {
 	remoteIP := r.RemoteAddr
 	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
 
-	render.RenderTemplate(rw, "home.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(rw, r, "home.page.tmpl", &models.TemplateData{})
 }
 
 // About handles about page
@@ -59,7 +60,7 @@ func (m *Repository) About(rw http.ResponseWriter, r *http.Request) {
 	stringMap["remote_ip"] = remoteIP
 
 	// passing data to template
-	render.RenderTemplate(rw, "about.page.tmpl", &models.TemplateData{
+	render.RenderTemplate(rw, r, "about.page.tmpl", &models.TemplateData{
 		Data:      data,
 		StringMap: stringMap,
 	})
@@ -67,25 +68,34 @@ func (m *Repository) About(rw http.ResponseWriter, r *http.Request) {
 
 // About handles about page
 func (m *Repository) Contact(rw http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(rw, "contact.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(rw, r, "contact.page.tmpl", &models.TemplateData{})
 }
 
 // Reservation renders the make a reservation page and display form
 func (m *Repository) Reservation(rw http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(rw, "make-reservation.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(rw, r, "make-reservation.page.tmpl", &models.TemplateData{})
 }
 
 // Generals renders the room page
 func (m *Repository) Generals(rw http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(rw, "generals.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(rw, r, "generals.page.tmpl", &models.TemplateData{})
 }
 
 // Majors renders the room page
 func (m *Repository) Majors(rw http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(rw, "majors.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(rw, r, "majors.page.tmpl", &models.TemplateData{})
 }
 
-// Majors renders the room page
+// Availability renders search availability form
 func (m *Repository) Availability(rw http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(rw, "search-availability.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(rw, r, "search-availability.page.tmpl", &models.TemplateData{})
+}
+
+// PostAvailability accept post request from search availability form
+func (m *Repository) PostAvailability(rw http.ResponseWriter, r *http.Request) {
+
+	start := r.Form.Get("start")
+	end := r.Form.Get("end")
+
+	rw.Write([]byte(fmt.Sprintf("the start date is %s, and the end date is %s", start, end)))
 }

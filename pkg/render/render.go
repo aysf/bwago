@@ -9,6 +9,7 @@ import (
 
 	"github.com/aysf/bwago/pkg/config"
 	"github.com/aysf/bwago/pkg/models"
+	"github.com/justinas/nosurf"
 )
 
 var app *config.AppConfig
@@ -17,8 +18,13 @@ func NewTemplates(a *config.AppConfig) {
 	app = a
 }
 
+func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	td.CSRFToken = nosurf.Token(r)
+	return td
+}
+
 // RenderTemplate renders template using html/template
-func RenderTemplate(rw http.ResponseWriter, tmpl string, td *models.TemplateData) error {
+func RenderTemplate(rw http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) error {
 
 	var tc map[string]*template.Template
 	if app.UseCache {
@@ -35,8 +41,15 @@ func RenderTemplate(rw http.ResponseWriter, tmpl string, td *models.TemplateData
 	}
 
 	buf := new(bytes.Buffer)
-	rt.Execute(buf, td)
-	_, err := buf.WriteTo(rw)
+
+	td = AddDefaultData(td, r)
+
+	err := rt.Execute(buf, td)
+	if err != nil {
+		return err
+	}
+
+	_, err = buf.WriteTo(rw)
 	if err != nil {
 		return err
 	}

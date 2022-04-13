@@ -1,0 +1,68 @@
+{{template "base" .}}
+
+{{define "content"}}
+
+
+<!-- section images -->
+<section class="container">
+    <div class="row">
+        <div class="col text-center">
+            <img src="static/images/generals-quarters.png" class="img-fluid room-image img-thumbnail" alt="room image">
+        </div>
+    </div>
+</section>
+
+
+<!-- section body -->
+
+<section class="container">
+    <div class="row">
+        <div class="col">
+            <h1 class="text-center mt-4">Generals Quarters</h1>
+            <p>
+                Your home away from home, set on the majestic waters of the Antlatic Ocean, this will be a vacation to
+                remember. Your home away from home, set on the majestic waters of the Antlatic Ocean, this will be a
+                vacation to remember. Your home away from home, set on the majestic waters of the Antlatic Ocean, this
+                will be a vacation to remember. Your home away from home, set on the majestic waters of the Antlatic
+                Ocean, this will be a vacation to remember. Your home away from home, set on the majestic waters of the
+                Antlatic Ocean, this will be a vacation to remember.
+            </p>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col text-center">
+            <a id="check-availability-btn" href="#!" class="btn btn-primary">Check Availability</a>
+        </div>
+    </div>
+</section>
+
+{{end}}
+
+{{define "js"}}
+<script>
+    let btn_color = document.getElementById("check-availability-btn")
+    btn_color.addEventListener("click", function () {
+        // notify("this is from script", "warning")
+        // notifModal("Ok", "this text is from html script", "success", "Alhamdulillah")
+        let html = `
+			<form id="check-availability-form" action="" method="post" novalidate class="needs-validation container-fluid"> 
+				<div class="row">
+					<div class="col">
+						<div class="row" id="reservation-dates-modal">
+							<div class="col">
+								<input disabled required class="form-control" type="text" name="start" id="start" placeholder="arrival">
+							</div>
+							<div class="col">
+								<input disabled required class="form-control" type="text" name="end" id="end" placeholder="depature">
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+			`;
+        att.custom({ msg: html, title: "Check Availability" });
+    })
+</script>
+
+{{end}}

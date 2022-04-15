@@ -1,7 +1,9 @@
 package handlers
 
 import (
+	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/aysf/bwago/pkg/config"
@@ -98,4 +100,28 @@ func (m *Repository) PostAvailability(rw http.ResponseWriter, r *http.Request) {
 	end := r.Form.Get("end")
 
 	rw.Write([]byte(fmt.Sprintf("the start date is %s, and the end date is %s", start, end)))
+}
+
+type jsonResponse struct {
+	Ok      bool   `json:"ok"`
+	Message string `json:"message"`
+}
+
+// AvailabilityJson handles request for availability and send JSON response
+func (m *Repository) AvailabilityJson(rw http.ResponseWriter, r *http.Request) {
+	resp := jsonResponse{
+		Ok:      true,
+		Message: "Available !",
+	}
+
+	out, err := json.MarshalIndent(resp, "", "	")
+	if err != nil {
+		log.Println(err)
+	}
+
+	log.Println(string(out))
+
+	rw.Header().Set("Content-Type", "application/json")
+	rw.Write(out)
+
 }

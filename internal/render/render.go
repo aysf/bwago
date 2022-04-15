@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"path/filepath"
 
-	"github.com/aysf/bwago/pkg/config"
-	"github.com/aysf/bwago/pkg/models"
+	"github.com/aysf/bwago/internal/config"
+	"github.com/aysf/bwago/internal/models"
 	"github.com/justinas/nosurf"
 )
 

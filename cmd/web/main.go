@@ -6,9 +6,9 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/aysf/bwago/pkg/config"
-	"github.com/aysf/bwago/pkg/handlers"
-	"github.com/aysf/bwago/pkg/render"
+	"github.com/aysf/bwago/internal/config"
+	"github.com/aysf/bwago/internal/handlers"
+	"github.com/aysf/bwago/internal/render"
 )
 
 const portNumber = ":8080"

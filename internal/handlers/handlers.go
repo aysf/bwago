@@ -6,9 +6,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/aysf/bwago/pkg/config"
-	"github.com/aysf/bwago/pkg/models"
-	"github.com/aysf/bwago/pkg/render"
+	"github.com/aysf/bwago/internal/config"
+	"github.com/aysf/bwago/internal/models"
+	"github.com/aysf/bwago/internal/render"
 )
 
 // Repo the repository used by handlers

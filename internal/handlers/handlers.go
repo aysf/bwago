@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/aysf/bwago/internal/config"
+	"github.com/aysf/bwago/internal/forms"
 	"github.com/aysf/bwago/internal/models"
 	"github.com/aysf/bwago/internal/render"
 )
@@ -75,7 +76,14 @@ func (m *Repository) Contact(rw http.ResponseWriter, r *http.Request) {
 
 // Reservation renders the make a reservation page and display form
 func (m *Repository) Reservation(rw http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(rw, r, "make-reservation.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(rw, r, "make-reservation.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+	})
+}
+
+// PostReservation handles the posting of a reservation form
+func (m *Repository) PostReservation(rw http.ResponseWriter, r *http.Request) {
+
 }
 
 // Generals renders the room page

@@ -76,8 +76,13 @@ func (m *Repository) Contact(rw http.ResponseWriter, r *http.Request) {
 
 // Reservation renders the make a reservation page and display form
 func (m *Repository) Reservation(rw http.ResponseWriter, r *http.Request) {
+	emptyReservation := models.Reservation{}
+	data := make(map[string]interface{})
+	data["reservation"] = emptyReservation
+
 	render.RenderTemplate(rw, r, "make-reservation.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
+		Data: data,
 	})
 }
 
@@ -98,7 +103,9 @@ func (m *Repository) PostReservation(rw http.ResponseWriter, r *http.Request) {
 
 	forms := forms.New(r.PostForm)
 
-	forms.Has("first_name", r)
+	// forms.Has("first_name", r)
+
+	forms.Required("first_name", "last_name", "email")
 
 	if !forms.Valid() {
 		data := make(map[string]interface{})

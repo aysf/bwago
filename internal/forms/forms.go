@@ -24,6 +24,15 @@ func New(data url.Values) *Form {
 	}
 }
 
+func (f *Form) Required(fields ...string) {
+	for _, field := range fields {
+		val := f.Get(field)
+		if val == "" {
+			f.Errors.Add(field, "The field cannot be blank")
+		}
+	}
+}
+
 // Has checks if form field is not empty
 func (f *Form) Has(field string, r *http.Request) bool {
 	x := r.Form.Get(field)

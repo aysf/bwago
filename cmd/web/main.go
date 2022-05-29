@@ -11,7 +11,7 @@ import (
 	"github.com/aysf/bwago/internal/render"
 )
 
-const portNumber = ":8080"
+const portNumber = ":9000"
 
 var app config.AppConfig
 var session *scs.SessionManager
@@ -50,7 +50,7 @@ func main() {
 
 	// http.Handle("/static/*", http.StripPrefix("/static", http.FileServer(http.Dir("./static"))))
 
-	log.Println("application running on port 8080")
+	log.Printf("application running on port %s\n", portNumber)
 	// http.ListenAndServe(":8080", nil)
 
 	server := &http.Server{

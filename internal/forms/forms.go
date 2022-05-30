@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"regexp"
 	"strings"
 )
 
@@ -40,7 +41,7 @@ func (f *Form) Required(fields ...string) {
 func (f *Form) Has(field string, r *http.Request) bool {
 	x := r.Form.Get(field)
 	if x == "" {
-		f.Errors.Add(field, "This field cannot be blank")
+		// f.Errors.Add(field, "This field cannot be blank")
 		return false
 	}
 	return true
@@ -53,5 +54,30 @@ func (f *Form) MinLength(field string, length int, r *http.Request) bool {
 		f.Errors.Add(field, fmt.Sprintf("this field must be at least %d characters long", length))
 		return false
 	}
+	return true
+}
+
+// IsEmail checks for valid email address
+func (f *Form) IsEmail(field string) bool {
+
+	email := f.Get(field)
+
+	emailRegex := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
+
+	if !emailRegex.MatchString(email) {
+		f.Errors.Add(field, "invalid email address")
+		return false
+	}
+
+	domain := strings.Split(email, "@")
+	nonBussinessEmail := []string{"gmail", "outlook", "live", "yahoo"}
+
+	for _, e := range nonBussinessEmail {
+		if strings.Contains(domain[1], e) {
+			f.Errors.Add(field, "invalid bussiness email address")
+			return false
+		}
+	}
+
 	return true
 }

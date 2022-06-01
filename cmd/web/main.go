@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/gob"
 	"log"
 	"net/http"
 	"time"
@@ -8,6 +9,7 @@ import (
 	"github.com/alexedwards/scs/v2"
 	"github.com/aysf/bwago/internal/config"
 	"github.com/aysf/bwago/internal/handlers"
+	"github.com/aysf/bwago/internal/models"
 	"github.com/aysf/bwago/internal/render"
 )
 
@@ -18,6 +20,8 @@ var session *scs.SessionManager
 
 // main is the main application funcion
 func main() {
+	// what am I going to put in the session
+	gob.Register(models.Reservation{})
 
 	// change this to true when in production
 	app.InProduction = false

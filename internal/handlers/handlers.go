@@ -178,7 +178,10 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
+		m.App.Session.Put(r.Context(), "error", "cannot get session from template")
+		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
 		log.Println("cannot get item from session")
+		return
 	}
 	data := make(map[string]interface{})
 	data["reservation"] = reservation

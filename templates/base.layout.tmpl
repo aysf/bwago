@@ -119,8 +119,19 @@
                 icon: icon,
                 confirmButtonText: confirmButtonText
             })
-
         }
+
+        {{with .Error}}
+        notify("{{.}}","error")
+        {{end}}
+
+        {{with .Flash}}
+        notify("{{.}}","success")
+        {{end}}
+
+        {{with .Warning}}
+        notify("{{.}}","warning")
+        {{end}}
 
         // // date range
         // const elem = document.getElementById('reservation-date');

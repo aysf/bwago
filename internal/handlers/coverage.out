@@ -1,0 +1,22 @@
+mode: set
+github.com/aysf/bwago/internal/handlers/handlers.go:24.47,28.2 1 1
+github.com/aysf/bwago/internal/handlers/handlers.go:31.33,33.2 1 1
+github.com/aysf/bwago/internal/handlers/handlers.go:36.68,41.2 3 1
+github.com/aysf/bwago/internal/handlers/handlers.go:44.69,70.2 7 0
+github.com/aysf/bwago/internal/handlers/handlers.go:73.71,75.2 1 0
+github.com/aysf/bwago/internal/handlers/handlers.go:78.75,87.2 4 0
+github.com/aysf/bwago/internal/handlers/handlers.go:90.79,92.16 2 0
+github.com/aysf/bwago/internal/handlers/handlers.go:97.2,112.20 6 0
+github.com/aysf/bwago/internal/handlers/handlers.go:124.2,126.67 2 0
+github.com/aysf/bwago/internal/handlers/handlers.go:92.16,95.3 2 0
+github.com/aysf/bwago/internal/handlers/handlers.go:112.20,122.3 4 0
+github.com/aysf/bwago/internal/handlers/handlers.go:130.72,132.2 1 0
+github.com/aysf/bwago/internal/handlers/handlers.go:135.70,137.2 1 0
+github.com/aysf/bwago/internal/handlers/handlers.go:140.76,142.2 1 0
+github.com/aysf/bwago/internal/handlers/handlers.go:145.80,151.2 3 0
+github.com/aysf/bwago/internal/handlers/handlers.go:159.80,166.16 3 0
+github.com/aysf/bwago/internal/handlers/handlers.go:170.2,173.15 3 0
+github.com/aysf/bwago/internal/handlers/handlers.go:166.16,168.3 1 0
+github.com/aysf/bwago/internal/handlers/handlers.go:177.81,180.9 2 0
+github.com/aysf/bwago/internal/handlers/handlers.go:186.2,191.4 3 0
+github.com/aysf/bwago/internal/handlers/handlers.go:180.9,185.3 4 0

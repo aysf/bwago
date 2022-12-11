@@ -29,7 +29,11 @@ Test all packages with total percentage
 go test --coverprofile=coverage.out ./... && go tool cover -func=coverage.out
 ```
 
+Test all packages with total percentage and display in the browser
 
+```
+go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out
+```
 
 # 3rd party library
 

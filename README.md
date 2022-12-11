@@ -6,28 +6,30 @@ building modern web application with Go
 clone this repo, go to project directory and run
 
 ```
-go run cmd/web/*.go
+./run.sh
 ```
 
 # Run test
 
-opsi 1
+Test all packages
 
 ```
-go test -coverprofile=coverage.out && go tool cover -html=coverage.out
+go test -coverpkg=./... ./...
 ```
 
-opsi 2
+Alternative command for testing
 
 ```
-go test -cover
+go test -v -cover  ./...
 ```
 
-opsi 2
+Test all packages with total percentage
 
 ```
-go test -v
+go test --coverprofile=coverage.out ./... && go tool cover -func=coverage.out
 ```
+
+
 
 # 3rd party library
 

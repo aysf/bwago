@@ -4,11 +4,13 @@ import (
 	"encoding/gob"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/alexedwards/scs/v2"
 	"github.com/aysf/bwago/internal/config"
 	"github.com/aysf/bwago/internal/handlers"
+	"github.com/aysf/bwago/internal/helpers"
 	"github.com/aysf/bwago/internal/models"
 	"github.com/aysf/bwago/internal/render"
 )
@@ -17,6 +19,8 @@ const portNumber = ":9000"
 
 var app config.AppConfig
 var session *scs.SessionManager
+var infolog *log.Logger
+var errorlog *log.Logger
 
 // main is the main application funcion
 func main() {
@@ -47,6 +51,12 @@ func Run() error {
 	// change this to true when in production
 	app.InProduction = false
 
+	infolog = log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime)
+	app.InfoLog = infolog
+
+	errorlog = log.New(os.Stdout, "ERRO\t", log.Ldate|log.Ltime|log.Lshortfile)
+	app.ErrorLog = errorlog
+
 	session = scs.New()
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true
@@ -64,16 +74,15 @@ func Run() error {
 	app.TemplateCache = tc
 	app.UseCache = app.InProduction
 
+	routes(&app)
+
 	Repo := handlers.NewRepo(&app)
 	handlers.NewHandlers(Repo)
-
 	render.NewTemplates(&app)
-
-	routes(&app)
+	helpers.NewHelpers(&app)
 
 	// http.HandleFunc("/", handlers.Home)
 	// http.HandleFunc("/about", handlers.About)
-
 	// http.Handle("/static/*", http.StripPrefix("/static", http.FileServer(http.Dir("./static"))))
 
 	return nil

@@ -8,6 +8,7 @@ import (
 
 	"github.com/aysf/bwago/internal/config"
 	"github.com/aysf/bwago/internal/forms"
+	"github.com/aysf/bwago/internal/helpers"
 	"github.com/aysf/bwago/internal/models"
 	"github.com/aysf/bwago/internal/render"
 )
@@ -34,8 +35,8 @@ func NewHandlers(r *Repository) {
 
 // Home handles home page
 func (m *Repository) Home(rw http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+	// remoteIP := r.RemoteAddr
+	// m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
 
 	render.RenderTemplate(rw, r, "home.page.tmpl", &models.TemplateData{})
 }
@@ -43,29 +44,29 @@ func (m *Repository) Home(rw http.ResponseWriter, r *http.Request) {
 // About handles about page
 func (m *Repository) About(rw http.ResponseWriter, r *http.Request) {
 
-	remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
+	// remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
 
-	// peform some logic
-	// get data from struct
-	data := make(map[string]interface{})
-	data["satu"] = struct {
-		Nama string
-		Umur int
-	}{
-		"Mina",
-		4,
-	}
+	// // peform some logic
+	// // get data from struct
+	// data := make(map[string]interface{})
+	// data["satu"] = struct {
+	// 	Nama string
+	// 	Umur int
+	// }{
+	// 	"Mina",
+	// 	4,
+	// }
 
-	// get data from string map
-	stringMap := make(map[string]string)
-	stringMap["hobby"] = "drawing"
+	// // get data from string map
+	// stringMap := make(map[string]string)
+	// stringMap["hobby"] = "drawing"
 
-	stringMap["remote_ip"] = remoteIP
+	// stringMap["remote_ip"] = remoteIP
 
 	// passing data to template
 	render.RenderTemplate(rw, r, "about.page.tmpl", &models.TemplateData{
-		Data:      data,
-		StringMap: stringMap,
+		// Data:      data,
+		// StringMap: stringMap,
 	})
 }
 
@@ -89,8 +90,12 @@ func (m *Repository) Reservation(rw http.ResponseWriter, r *http.Request) {
 // PostReservation handles the posting of a reservation form
 func (m *Repository) PostReservation(rw http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
+
+	// for testing error manually uncommented this line
+	// err = errors.New("error on purpose")
+
 	if err != nil {
-		log.Println(err)
+		helpers.ServerError(rw, err)
 		return
 	}
 
@@ -164,7 +169,7 @@ func (m *Repository) AvailabilityJson(rw http.ResponseWriter, r *http.Request) {
 
 	out, err := json.MarshalIndent(resp, "", "	")
 	if err != nil {
-		log.Println(err)
+		helpers.ServerError(rw, err)
 	}
 
 	log.Println(string(out))
@@ -178,9 +183,10 @@ func (m *Repository) ReservationSummary(w http.ResponseWriter, r *http.Request) 
 
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 	if !ok {
+		m.App.ErrorLog.Println("Can't get error from session")
 		m.App.Session.Put(r.Context(), "error", "cannot get session from template")
 		http.Redirect(w, r, "/", http.StatusTemporaryRedirect)
-		log.Println("cannot get item from session")
+		// log.Println("cannot get item from session")
 		return
 	}
 	data := make(map[string]interface{})

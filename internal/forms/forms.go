@@ -2,6 +2,7 @@ package forms
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -32,6 +33,7 @@ func (f *Form) Required(fields ...string) {
 	for _, field := range fields {
 		val := f.Get(field)
 		if strings.TrimSpace(val) == "" {
+			log.Println("form error 1")
 			f.Errors.Add(field, "The field cannot be blank")
 		}
 	}
@@ -56,6 +58,8 @@ func (f *Form) MinLength(field string, length int, r *http.Request) bool {
 	x := f.Get(field)
 
 	if len(x) < length {
+		log.Println("form error 2")
+
 		f.Errors.Add(field, fmt.Sprintf("this field must be at least %d characters long", length))
 		return false
 	}
@@ -67,7 +71,7 @@ func (f *Form) IsEmail(field string) bool {
 
 	email := f.Get(field)
 
-	emailRegex := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
+	emailRegex := regexp.MustCompile(`^[A-Za-z0-9._+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`)
 
 	if !emailRegex.MatchString(email) {
 		f.Errors.Add(field, "invalid email address")

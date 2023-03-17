@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"testing"
 	"time"
 
 	"github.com/alexedwards/scs/v2"
@@ -22,7 +23,9 @@ var app config.AppConfig
 var session *scs.SessionManager
 var templateDir = "./../../templates"
 
-func getRoute() http.Handler {
+// var functions = template.FuncMap{}
+
+func TestMain(m *testing.M) {
 	// copy from main func
 	// what am I going to put in the session
 	gob.Register(models.Reservation{})
@@ -45,7 +48,7 @@ func getRoute() http.Handler {
 	app.Session = session
 	// app.UseCache = true
 
-	tc, err := CreateTestTemplateCache()
+	tc, err := createTestTemplateCache()
 	if err != nil {
 		log.Panic("error loading template cache ", err)
 	}
@@ -53,16 +56,22 @@ func getRoute() http.Handler {
 	app.TemplateCache = tc
 	app.UseCache = app.InProduction
 
-	Repo := NewRepo(&app)
+	Repo := NewTestRepo(&app)
 	NewHandlers(Repo)
-	render.NewTemplates(&app)
+	render.NewRenderer(&app)
+
+	// before exit the func, run the test
+	os.Exit(m.Run())
+}
+
+func getRoute() http.Handler {
 
 	mux := chi.NewRouter()
 
 	mux.Use(middleware.Recoverer)
 	// mux.Use(NoSurf)
-	mux.Use(ConsoleLog)
-	mux.Use(SessionLoad)
+	mux.Use(consoleLog)
+	mux.Use(sessionLoad)
 
 	mux.Get("/", Repo.Home)
 	mux.Get("/about", Repo.About)
@@ -72,6 +81,9 @@ func getRoute() http.Handler {
 	mux.Get("/search-availability", Repo.Availability)
 	mux.Post("/search-availability", Repo.PostAvailability)
 	mux.Post("/search-availability-json", Repo.AvailabilityJson)
+
+	mux.Get("/choose-room/{id}", Repo.ChooseRoom)
+	mux.Get("/book-room", Repo.BookRoom)
 
 	mux.Get("/make-reservation", Repo.Reservation)
 	mux.Post("/make-reservation", Repo.PostReservation)
@@ -84,8 +96,8 @@ func getRoute() http.Handler {
 
 }
 
-// ConsoleLog writes log in the console
-func ConsoleLog(next http.Handler) http.Handler {
+// consoleLog writes log in the console
+func consoleLog(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, r *http.Request) {
 		log.Println("hit the test page")
 		next.ServeHTTP(rw, r)
@@ -106,13 +118,13 @@ func NoSurf(next http.Handler) http.Handler {
 	return csrfHandler
 }
 
-// SessionLoad loads and save in every request
-func SessionLoad(next http.Handler) http.Handler {
+// sessionLoad loads and save in every request
+func sessionLoad(next http.Handler) http.Handler {
 	return session.LoadAndSave(next)
 }
 
-// CreateTestTemplateCache creates template cache in a map
-func CreateTestTemplateCache() (map[string]*template.Template, error) {
+// createTestTemplateCache creates template cache in a map
+func createTestTemplateCache() (map[string]*template.Template, error) {
 
 	// tc is template cache
 	tc := map[string]*template.Template{}

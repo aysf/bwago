@@ -17,10 +17,12 @@ import (
 var app *config.AppConfig
 var templateDir = "./templates"
 
-func NewTemplates(a *config.AppConfig) {
+// NewRenderer sets the config for the template package
+func NewRenderer(a *config.AppConfig) {
 	app = a
 }
 
+// AddDefaultData adds data for all template
 func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
 	td.Error = app.Session.PopString(r.Context(), "error")
 	td.Flash = app.Session.PopString(r.Context(), "flash")
@@ -29,8 +31,8 @@ func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateDa
 	return td
 }
 
-// RenderTemplate renders template using html/template
-func RenderTemplate(rw http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) error {
+// Template renders template using html/template
+func Template(rw http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) error {
 
 	var tc map[string]*template.Template
 	if app.UseCache {

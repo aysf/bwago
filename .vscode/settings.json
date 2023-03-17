@@ -1,0 +1,27 @@
+{
+    "sqltools.connections": [
+        {
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 6033,
+            "driver": "MySQL",
+            "database": "root",
+            "username": "root",
+            "password": "custompwd",
+            "name": "mysql-docker"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "pg",
+            "database": "bookings",
+            "username": "postgres",
+            "password": ""
+        }
+    ]
+}

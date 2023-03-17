@@ -9,6 +9,7 @@ import (
 
 	"github.com/alexedwards/scs/v2"
 	"github.com/aysf/bwago/internal/config"
+	"github.com/aysf/bwago/internal/driver"
 	"github.com/aysf/bwago/internal/handlers"
 	"github.com/aysf/bwago/internal/helpers"
 	"github.com/aysf/bwago/internal/models"
@@ -25,10 +26,11 @@ var errorlog *log.Logger
 // main is the main application funcion
 func main() {
 
-	err := Run()
+	db, err := Run()
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer db.SQL.Close()
 
 	log.Printf("application running on port %s\n", portNumber)
 	// http.ListenAndServe(":8080", nil)
@@ -44,7 +46,7 @@ func main() {
 	}
 }
 
-func Run() error {
+func Run() (*driver.DB, error) {
 	// what am I going to put in the session
 	gob.Register(models.Reservation{})
 
@@ -65,10 +67,18 @@ func Run() error {
 
 	app.Session = session
 
+	// connect to database
+	log.Println("connecting to database...")
+	db, err := driver.ConnectSQL("host=localhost port=5432 dbname=bookings user=postgres password=")
+	if err != nil {
+		log.Fatal("cannot connect to database! Dying...")
+	}
+	log.Println("connected to database!")
+
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
 		log.Panic("error loading template cache ", err)
-		return err
+		return nil, err
 	}
 
 	app.TemplateCache = tc
@@ -76,14 +86,14 @@ func Run() error {
 
 	routes(&app)
 
-	Repo := handlers.NewRepo(&app)
+	Repo := handlers.NewRepo(&app, db)
 	handlers.NewHandlers(Repo)
-	render.NewTemplates(&app)
+	render.NewRenderer(&app)
 	helpers.NewHelpers(&app)
 
 	// http.HandleFunc("/", handlers.Home)
 	// http.HandleFunc("/about", handlers.About)
 	// http.Handle("/static/*", http.StripPrefix("/static", http.FileServer(http.Dir("./static"))))
 
-	return nil
+	return db, nil
 }

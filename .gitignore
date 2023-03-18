@@ -2,3 +2,4 @@ bwago
 **/coverage.out
 
 database.yml
+env.sh

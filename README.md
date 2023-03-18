@@ -1,13 +1,18 @@
 # bwago
 building modern web application with Go
 
-# How to use
+## Prerequisite
 
-clone this repo, go to project directory and run
+1. Go 1.18 or above
+2. [Soda](https://gobuffalo.io/documentation/database/soda/)
 
-```
-./run.sh
-```
+
+## How to use
+
+1. clone this repo, go to project directory 
+2. migrate db `soda migrate up`
+3. run script `./run.sh`
+4. open browser `locahost:9000`
 
 # Run test
 
@@ -43,6 +48,7 @@ go test -coverprofile=coverage.out ./... && go tool cover -html=coverage.out
 - Popup Message [sweetalert2](https://github.com/sweetalert2/sweetalert2) 
 - Notification [Notie](https://jaredreich.com/notie/)
 - [vanilajs-datepicker](https://mymth.github.io/vanillajs-datepicker/#/)
+- [go-simple-mail](https://github.com/xhit/go-simple-mail)
 
 # Motivation
 

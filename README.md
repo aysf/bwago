@@ -13,6 +13,7 @@ building modern web application with Go
 2. migrate db `soda migrate up`
 3. run script `./run.sh`
 4. open browser `locahost:9000`
+5. login admin email `admin@here.com`, password `password`
 
 # Run test
 

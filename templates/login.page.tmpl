@@ -5,7 +5,8 @@
     <div class="row">
         <div class="col">
             <h1>Login</h1>
-            <form>
+            <form method="post" action="/user/login" novalidate>
+                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
                 <div class="form-group mt-3">
                     <label for="email">Email</label>
                     {{with .Form.Errors.Get "email"}}
@@ -21,7 +22,7 @@
                     <label class="text-danger">{{.}}</label>
                     {{end}}
                     <input class="form-control {{with .Form.Errors.Get "password"}} is-invalid {{end}}" id="password"
-                        autocomplete="off" type='text' name='password' value="" required>
+                        autocomplete="off" type='password' name='password' value="" required>
                 </div>
 
                 <hr>

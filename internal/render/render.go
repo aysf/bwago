@@ -8,11 +8,16 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"time"
 
 	"github.com/aysf/bwago/internal/config"
 	"github.com/aysf/bwago/internal/models"
 	"github.com/justinas/nosurf"
 )
+
+var functions = template.FuncMap{
+	"humanDate": HumanDate,
+}
 
 var app *config.AppConfig
 var templateDir = "./templates"
@@ -20,6 +25,11 @@ var templateDir = "./templates"
 // NewRenderer sets the config for the template package
 func NewRenderer(a *config.AppConfig) {
 	app = a
+}
+
+// HumanDate returns time in Monday, DD MM YYYY
+func HumanDate(t time.Time) string {
+	return t.Format("Monday, 02 Jan 2006")
 }
 
 // AddDefaultData adds data for all template
@@ -87,7 +97,7 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 		name := filepath.Base(page)
 
 		// ts is template set
-		ts, err := template.ParseFiles(page)
+		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
 		if err != nil {
 			return tc, err
 		}

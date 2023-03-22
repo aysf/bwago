@@ -567,6 +567,15 @@ func (m *Repository) AdminNewReservations(w http.ResponseWriter, r *http.Request
 	})
 }
 
+// AdminShowReservation shows the reservation in the admin tool
+func (m *Repository) AdminShowReservation(w http.ResponseWriter, r *http.Request) {
+	// get reservation from database
+
+	render.Template(w, r, "admin-reservations-show.page.tmpl", &models.TemplateData{})
+
+}
+
+// AdminReservationsCalendar displays the reservation calendar
 func (m *Repository) AdminReservationsCalendar(w http.ResponseWriter, r *http.Request) {
 	render.Template(w, r, "admin-reservations-calendar.page.tmpl", &models.TemplateData{})
 }

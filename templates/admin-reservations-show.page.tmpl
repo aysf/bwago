@@ -6,7 +6,11 @@ Reservation
 
 {{define "content"}}
 <div class="col-md-12">
-    Show Reservation
+    {{$res := index .Data "reservation"}}
+    <p>
+        Show Reservation {{$res.FirstName}}
+
+    </p>
 </div>
 
 {{end}}

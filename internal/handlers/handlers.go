@@ -586,12 +586,14 @@ func (m *Repository) AdminShowReservation(w http.ResponseWriter, r *http.Request
 		helpers.ServerError(w, err)
 		return
 	}
+
 	data := make(map[string]interface{})
 	data["reservation"] = resv
 
 	render.Template(w, r, "admin-reservations-show.page.tmpl", &models.TemplateData{
 		StringMap: stringMap,
 		Data:      data,
+		Form:      &forms.Form{},
 	})
 }
 

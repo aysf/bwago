@@ -27,7 +27,11 @@ New Reservations
             {{range $res}}
             <tr>
                 <td>{{.ID}}</td>
-                <td>{{.LastName}}</td>
+                <td>
+                    <a href="reservations/new/{{.ID}}">
+                        {{.LastName}}
+                    </a>
+                </td>
                 <td>{{.Room.RoomName}}</td>
                 <td>{{humanDate .StartDate}}</td>
                 <td>{{humanDate .EndDate}}</td>
@@ -47,6 +51,10 @@ New Reservations
 {{define "js"}}
 <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
 <script>
-    const dataTable = new simpleDatatables.DataTable("#new-res", {})
+    document.addEventListener("DOMContentLoaded", function () {
+        const dataTable = new simpleDatatables.DataTable("#new-res", {
+            select: 3, sort: "desc",
+        })
+    })
 </script>
 {{end}}

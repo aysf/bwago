@@ -569,10 +569,30 @@ func (m *Repository) AdminNewReservations(w http.ResponseWriter, r *http.Request
 
 // AdminShowReservation shows the reservation in the admin tool
 func (m *Repository) AdminShowReservation(w http.ResponseWriter, r *http.Request) {
+	exploded := strings.Split(r.RequestURI, "/")
+	id, err := strconv.Atoi(exploded[4])
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	src := exploded[3]
+	stringMap := make(map[string]string)
+	stringMap["src"] = src
+
 	// get reservation from database
+	resv, err := m.DB.GetReservationByID(id)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+	data := make(map[string]interface{})
+	data["reservation"] = resv
 
-	render.Template(w, r, "admin-reservations-show.page.tmpl", &models.TemplateData{})
-
+	render.Template(w, r, "admin-reservations-show.page.tmpl", &models.TemplateData{
+		StringMap: stringMap,
+		Data:      data,
+	})
 }
 
 // AdminReservationsCalendar displays the reservation calendar

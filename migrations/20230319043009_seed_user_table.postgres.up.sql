@@ -1,6 +1,7 @@
 INSERT INTO
     public.users (
         email,
+        phone,
         first_name,
         last_name,
         "password",
@@ -10,6 +11,7 @@ INSERT INTO
     )
 VALUES (
         'admin@here.com',
+        '555-555-555',
         'ananto',
         'wicaksono',
         '$2a$12$MraqY9Th.iwdCDx.31ZAnOdafFOACF5chCfF1KI9hopz6aNHwrpXO',

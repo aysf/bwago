@@ -15,7 +15,19 @@ building modern web application with Go
 4. open browser `locahost:9000`
 5. login admin email `admin@here.com`, password `password`
 
+## Tips
 
+### Migrate down all steps
+
+```
+soda migrate down -s -1
+```
+
+### Generate seed data
+
+```
+soda g sql SeedUsersTable
+```
 
 # Run test
 

@@ -78,16 +78,10 @@ function Prompt() {
             showCancelButton: true,
             showConfirmButton: showConfirmButton,
             willOpen: () => {
-               if (c.willOpen !== undefined) {
+                if (c.willOpen !== undefined) {
                     c.willOpen()
-               }
+                }
 
-            },
-            preConfirm: () => {
-                return [
-                    document.getElementById('start').value,
-                    document.getElementById('end').value
-                ]
             },
             didOpen: () => {
                 if (c.didOpen !== undefined) {

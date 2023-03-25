@@ -15,6 +15,7 @@
         <!-- plugin css for this page -->
         <!-- End plugin css for this page -->
         <!-- inject:css -->
+        <link rel="stylesheet" type="text/css" href="/static/assets/css/notie.min.css">
         <link rel="stylesheet" href="/static/assets/admin/css/style.css">
         <!-- endinject -->
         <link rel="shortcut icon" href="images/favicon.png" />
@@ -225,8 +226,43 @@
         <script src="/static/assets/admin/js/todolist.js"></script>
         <!-- endinject -->
         <!-- Custom js for this page-->
+        <script src="/static/assets/js/notie.min.js"></script>
+        <script src="/static/assets/js/sweetalert2@11.js"></script>
+        <script src="/static/assets/js/app.js"></script>
         <script src="/static/assets/admin/js/dashboard.js"></script>
         <!-- End custom js for this page-->
+        <script>
+            let att = Prompt()
+            // notification
+            function notify(msg, msgType) {
+                notie.alert({
+                    type: msgType, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
+                    text: msg
+                })
+            }
+            // notification modal
+            function notifModal(title, text, icon, confirmButtonText) {
+                Swal.fire({
+                    title: title,
+                    text: text,
+                    icon: icon,
+                    confirmButtonText: confirmButtonText
+                })
+            }
+
+        
+            {{with .Error}}
+            notify("{{.}}","error")
+            {{end}}
+
+            {{with .Flash}}
+            notify("{{.}}","success")
+            {{end}}
+
+            {{with .Warning}}
+            notify("{{.}}","warning")
+            {{end}}
+        </script>
 
         {{block "js" .}}
 

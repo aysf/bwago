@@ -288,8 +288,9 @@ func (m *Repository) PostAvailability(rw http.ResponseWriter, r *http.Request) {
 	if len(rooms) == 0 {
 		// no availability
 		// generate an error message
+		log.Println("no rum hit")
 		m.App.Session.Put(r.Context(), "error", "No availability")
-		http.Redirect(rw, r, "/search-availability", http.StatusNoContent)
+		http.Redirect(rw, r, "/search-availability", http.StatusSeeOther)
 		return
 	}
 

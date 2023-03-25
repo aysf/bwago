@@ -17,6 +17,7 @@ import (
 	"github.com/aysf/bwago/internal/render"
 	"github.com/aysf/bwago/internal/repository"
 	"github.com/aysf/bwago/internal/repository/dbrepo"
+	"github.com/go-chi/chi/v5"
 )
 
 // Repo the repository used by handlers
@@ -642,4 +643,14 @@ func (m *Repository) AdminPostReservation(w http.ResponseWriter, r *http.Request
 // AdminReservationsCalendar displays the reservation calendar
 func (m *Repository) AdminReservationsCalendar(w http.ResponseWriter, r *http.Request) {
 	render.Template(w, r, "admin-reservations-calendar.page.tmpl", &models.TemplateData{})
+}
+
+// AdminProcessReservation displays the reservation calendar
+func (m *Repository) AdminProcessReservation(w http.ResponseWriter, r *http.Request) {
+	id, _ := strconv.Atoi(chi.URLParam(r, "id"))
+	src := chi.URLParam(r, "src")
+	_ = m.DB.UpdateProcessedForReservation(id, 1)
+
+	m.App.Session.Put(r.Context(), "flash", "reservation marked as processed")
+	http.Redirect(w, r, fmt.Sprintf("/admin/reservations-%s", src), http.StatusSeeOther)
 }

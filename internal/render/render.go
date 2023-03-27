@@ -16,7 +16,8 @@ import (
 )
 
 var functions = template.FuncMap{
-	"humanDate": HumanDate,
+	"humanDate":  HumanDate,
+	"formatDate": FormatDate,
 }
 
 var app *config.AppConfig
@@ -30,6 +31,10 @@ func NewRenderer(a *config.AppConfig) {
 // HumanDate returns time in Monday, DD MM YYYY
 func HumanDate(t time.Time) string {
 	return t.Format("Monday, 02 Jan 2006")
+}
+
+func FormatDate(t time.Time, layout string) string {
+	return t.Format(layout)
 }
 
 // AddDefaultData adds data for all template

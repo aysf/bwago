@@ -780,7 +780,10 @@ func (m *Repository) AdminPostReservationsCalendar(w http.ResponseWriter, r *htt
 				if val > 0 {
 					if !form.Has(fmt.Sprintf("removed_block_%d_%s", rm.ID, name), r) {
 						// delete the restriction by ID
-						log.Println("would delete block", value)
+						err := m.DB.DeleteBlockByID(value)
+						if err != nil {
+							log.Println("error block reservation", err)
+						}
 					}
 				}
 			}

@@ -39,7 +39,7 @@ Reservations Calendar
             {{$reservations := index $.Data (printf "reservation_map_%d" .ID)}}
 
     
-            <h4>
+            <h4 class="mt-4">
                 {{.RoomName}}
             </h4>
             <div class="table-responsive">
@@ -78,7 +78,7 @@ Reservations Calendar
 
         {{end}}
 
-        <input type="submit" value="Save Changes" class="btn btn-primary">
+        <input type="submit" value="Save Changes" class="btn btn-primary mt-4 mb-4">
     </form>
 
 {{end}}

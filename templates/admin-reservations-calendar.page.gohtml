@@ -9,6 +9,8 @@ Reservations Calendar
     {{$now := index .Data "now"}}
     {{$rooms := index .Data "rooms"}}
     {{$dim := index .IntMap "days_in_month"}}
+    {{$curMonth := index .StringMap "this_month"}}
+    {{$curYear := index .StringMap "this_month_year"}}
     <div class="text-center">
         <!-- <h3>{{index .StringMap "this_month"}} {{index .StringMap "this_month_year"}}</h3> -->
         <h3>{{formatDate $now "January"}} {{formatDate $now "2006"}}</h3>
@@ -28,6 +30,14 @@ Reservations Calendar
     {{range $rooms}}
 
     {{$roomID := .ID}}
+
+    {{$blocks := index $.Data (printf "block_map_%d" .ID)}}
+    {{$reservations := index $.Data (printf "reservation_map_%d" .ID)}}
+
+    <i>spil reservation</i>
+    {{range $blocks}}
+    <i>{{.}}</i>
+    {{end}}
     <h4>
         {{.RoomName}}
     </h4>
@@ -41,9 +51,19 @@ Reservations Calendar
                 {{end}}
             </tr>
             <tr>
-                {{range $index := iterate $dim}}
+                {{range $day := iterate $dim}}
                 <td class="text-center">
-                    <input type="checkbox">
+                    <!-- <input checked type="checkbox"> -->
+                    <input 
+                    {{if gt (index $blocks (printf "%s-%s-%d" $curYear $curMonth $day)) 0}} 
+                        checked
+                        name="remove_block_{{$roomID}}_{{printf "%s-%s-%d" $curYear $curMonth $day}}"
+                        value="{{index $blocks (printf "%s-%s-%d" $curYear $curMonth $day)}}" 
+                    {{else}}
+                        name="add_block_{{$roomID}}_{{printf "%s-%s-%d" $curYear $curMonth $day}}" 
+                    {{end}}
+                        type="checkbox">
+
                 </td>
                 {{end}}
             </tr>

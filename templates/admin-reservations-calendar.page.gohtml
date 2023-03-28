@@ -29,47 +29,49 @@ Reservations Calendar
 
     {{range $rooms}}
 
-    {{$roomID := .ID}}
+        {{$roomID := .ID}}
 
-    {{$blocks := index $.Data (printf "block_map_%d" .ID)}}
-    {{$reservations := index $.Data (printf "reservation_map_%d" .ID)}}
+        {{$blocks := index $.Data (printf "block_map_%d" .ID)}}
+        {{$reservations := index $.Data (printf "reservation_map_%d" .ID)}}
 
-    <i>spil reservation</i>
-    {{range $blocks}}
-    <i>{{.}}</i>
-    {{end}}
-    <h4>
-        {{.RoomName}}
-    </h4>
-    <div class="table-responsive">
-        <table class="table table-bordered table-sm">
-            <tr class="table-dark">
-                {{range $index := iterate $dim}}
-                <td class="text-center">
-                    {{$index}}
-                </td>
-                {{end}}
-            </tr>
-            <tr>
-                {{range $day := iterate $dim}}
-                <td class="text-center">
-                    <!-- <input checked type="checkbox"> -->
-                    <input 
-                    {{if gt (index $blocks (printf "%s-%s-%d" $curYear $curMonth $day)) 0}} 
-                        checked
-                        name="remove_block_{{$roomID}}_{{printf "%s-%s-%d" $curYear $curMonth $day}}"
-                        value="{{index $blocks (printf "%s-%s-%d" $curYear $curMonth $day)}}" 
-                    {{else}}
-                        name="add_block_{{$roomID}}_{{printf "%s-%s-%d" $curYear $curMonth $day}}" 
+ 
+        <h4>
+            {{.RoomName}}
+        </h4>
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm">
+                <tr class="table-dark">
+                    {{range $index := iterate $dim}}
+                    <td class="text-center">
+                        {{$index}}
+                    </td>
                     {{end}}
-                        type="checkbox">
+                </tr>
+                <tr>
+                    {{range $day := iterate $dim}}
+                    <td class="text-center">
+                        {{if gt (index $reservations (printf "%s-%s-%d" $curYear $curMonth $day)) 0}}
+                            <a href="/admin/reservations/cal/{{index $reservations (printf "%s-%s-%d" $curYear $curMonth $day)}}">
+                                <span class="text-danger">R</span>
+                            </a>
+                        {{else}}
+                            <input 
+                            {{if gt (index $blocks (printf "%s-%s-%d" $curYear $curMonth $day)) 0}} 
+                                checked
+                                name="remove_block_{{$roomID}}_{{printf "%s-%s-%d" $curYear $curMonth $day}}"
+                                value="{{index $blocks (printf "%s-%s-%d" $curYear $curMonth $day)}}" 
+                            {{else}}
+                                name="add_block_{{$roomID}}_{{printf "%s-%s-%d" $curYear $curMonth $day}}" 
+                            {{end}}
+                                type="checkbox">
+                        {{end}}
 
-                </td>
-                {{end}}
-            </tr>
-        </table>
-    </div>
+                    </td>
+                    {{end}}
+                </tr>
+            </table>
+        </div>
 
     {{end}}
 
-    {{end}}
+{{end}}

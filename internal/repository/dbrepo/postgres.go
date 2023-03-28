@@ -409,7 +409,7 @@ func (m *postgresDBRepo) DeleteReservation(id int) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := `DELETE FROM reservation WHERE id = $1`
+	query := /* sql */ `DELETE FROM reservation WHERE id = $1`
 
 	_, err := m.DB.ExecContext(ctx, query, id)
 	if err != nil {
@@ -424,7 +424,7 @@ func (m *postgresDBRepo) UpdateProcessedForReservation(id, processed int) error 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := `UPDATE reservation SET processed = $1 WHERE id = $2`
+	query := /* sql */ `UPDATE reservation SET processed = $1 WHERE id = $2`
 
 	_, err := m.DB.ExecContext(ctx, query, processed, id)
 	if err != nil {
@@ -441,7 +441,7 @@ func (m *postgresDBRepo) AllRooms() ([]models.Room, error) {
 
 	var rooms []models.Room
 
-	query := `SELECT id, room_name, created_at, updated_at FROM	room ORDER BY room_name`
+	query := /* sql */ `SELECT id, room_name, created_at, updated_at FROM	room ORDER BY room_name`
 
 	rows, err := m.DB.QueryContext(ctx, query)
 	if err != nil {
@@ -477,7 +477,7 @@ func (m *postgresDBRepo) GetRestrictionsForRoomByDate(roomID int, start, end tim
 
 	var restrictions []models.RoomRestriction
 
-	query := `
+	query := /* sql */ `
 		SELECT id, coalesce(reservation_id, 0), restriction_id, room_id, start_date, end_date
 		FROM room_restriction WHERE $1 < end_date AND $2 >= start_date
 		AND room_id = $3

@@ -769,7 +769,7 @@ func (m *Repository) AdminPostReservationsCalendar(w http.ResponseWriter, r *htt
 
 	for _, rm := range rooms {
 		// Get the block map from the session. Loop through entire map, if we have an entry in the map
-		// that does not exist in our posted data, and if the restriction id > 0, then it is a block we
+		// that does not exist in our posted data, and if the restriction id == 2, then it is a block we
 		// need to remove
 		curMap := m.App.Session.Get(r.Context(), fmt.Sprintf("block_map_%d", rm.ID)).(map[string]int)
 		for name, value := range curMap {

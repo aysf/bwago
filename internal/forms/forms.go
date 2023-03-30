@@ -40,7 +40,7 @@ func (f *Form) Required(fields ...string) {
 }
 
 // Has checks if form field is not empty
-func (f *Form) Has(field string, r *http.Request) bool {
+func (f *Form) Has(field string) bool {
 	// deprecated since this will fail the test
 	// x := r.Form.Get(field)
 	x := f.Get(field)

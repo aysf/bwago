@@ -67,6 +67,7 @@ Reservations Calendar
                                     value="{{index $blocks (printf "%s-%s-%d" $curYear $curMonth $day)}}" 
                                 {{else}}
                                     name="add_block_{{$roomID}}_{{printf "%s-%s-%d" $curYear $curMonth $day}}" 
+                                    value="1"
                                 {{end}}
                                     type="checkbox">
                             {{end}}

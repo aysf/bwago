@@ -719,6 +719,7 @@ func (m *Repository) AdminReservationsCalendar(w http.ResponseWriter, r *http.Re
 		data[fmt.Sprintf("reservation_map_%d", rm.ID)] = reservationMap
 		data[fmt.Sprintf("block_map_%d", rm.ID)] = blockMap
 
+		log.Println("saved blocks:", blockMap)
 		m.App.Session.Put(r.Context(), fmt.Sprintf("block_map_%d", rm.ID), blockMap)
 	}
 
@@ -769,9 +770,12 @@ func (m *Repository) AdminPostReservationsCalendar(w http.ResponseWriter, r *htt
 
 	for _, rm := range rooms {
 		// Get the block map from the session. Loop through entire map, if we have an entry in the map
-		// that does not exist in our posted data, and if the restriction id == 2, then it is a block we
+		// that does not exist in our posted data, and if the restriction id > 0, then it is a block we
 		// need to remove
 		curMap := m.App.Session.Get(r.Context(), fmt.Sprintf("block_map_%d", rm.ID)).(map[string]int)
+
+		log.Println("curMap", curMap)
+
 		for name, value := range curMap {
 			// ok will be false if the value is not in the map
 			if val, ok := curMap[name]; ok {
@@ -780,10 +784,14 @@ func (m *Repository) AdminPostReservationsCalendar(w http.ResponseWriter, r *htt
 				if val > 0 {
 					if !form.Has(fmt.Sprintf("removed_block_%d_%s", rm.ID, name), r) {
 						// delete the restriction by ID
-						err := m.DB.DeleteBlockByID(value)
-						if err != nil {
-							log.Println("error block reservation", err)
-						}
+
+						log.Println("would delete block", value)
+
+						// err := m.DB.DeleteBlockByID(value)
+						// if err != nil {
+						// 	log.Println("error block reservation", err)
+						// }
+
 					}
 				}
 			}

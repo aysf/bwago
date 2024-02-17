@@ -1,0 +1,8 @@
+version: '3'
+services:
+  bwago:
+    build: .
+    ports:
+      - "9000:9000"
+    environment:
+      DBURL: ${DBURL}

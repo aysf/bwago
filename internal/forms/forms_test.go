@@ -46,7 +46,7 @@ func TestForm_Has(t *testing.T) {
 	r := httptest.NewRequest("POST", "/whatever", nil)
 	form := New(r.PostForm)
 
-	has := form.Has("whatever", r)
+	has := form.Has("whatever")
 	if has {
 		t.Error("form shows has field when it does not")
 	}
@@ -55,7 +55,8 @@ func TestForm_Has(t *testing.T) {
 	postedData.Add("a", "a")
 	form = New(postedData)
 
-	has = form.Has("a", r)
+	// has = form.Has("a", r)
+	has = form.Has("a")
 	if !has {
 		t.Log("testing fail")
 		t.Error("shows form does not have field when it should")

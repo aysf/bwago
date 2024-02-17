@@ -4,8 +4,7 @@ import (
 	"database/sql"
 	"time"
 
-	_ "github.com/jackc/pgx/v5"
-	_ "github.com/jackc/pgx/v5/stdlib"
+	_ "github.com/lib/pq"
 )
 
 type DB struct {
@@ -37,7 +36,7 @@ func ConnectSQL(dsn string) (*DB, error) {
 
 // newDatabase creates a new database for the application
 func newDatabase(dsn string) (*sql.DB, error) {
-	db, err := sql.Open("pgx", dsn)
+	db, err := sql.Open("postgres", dsn)
 	if err != nil {
 		return nil, err
 	}

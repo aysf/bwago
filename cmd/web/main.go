@@ -34,14 +34,6 @@ func main() {
 	}
 	defer db.SQL.Close()
 
-	// -> sample using std.lib for sending email
-	// from := "ananto@here.com"
-	// auth := smtp.PlainAuth("", from, "", "localhost")
-	// err = smtp.SendMail("localhost:1025", auth, from, []string{"you@there.com"}, []byte("hello world :)"))
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-
 	defer close(app.MailChan)
 
 	fmt.Println("starting mail listener...")
@@ -74,19 +66,11 @@ func Run() (*driver.DB, error) {
 
 	inProduction := flag.Bool("production", true, "Application is in production")
 	useCache := flag.Bool("cache", true, "Use template cache")
-	dbHost := flag.String("dbhost", "localhost", "Database Host")
-	dbName := flag.String("dbname", "", "Database Name")
-	dbUser := flag.String("dbuser", "", "Database User")
-	dbPass := flag.String("dbpass", "", "Database Password")
-	dbPort := flag.String("dbport", "5432", "Database Port")
-	dbSSL := flag.String("dbssl", "disable", "Database SSL settings (disable, prefer, require)")
+
+	dbURL := flag.String("dburl", "", "Database URL")
+	// dbSSL := flag.String("dbssl", "disable", "Database SSL settings (disable, prefer, require)")
 
 	flag.Parse()
-
-	if *dbName == "" || *dbUser == "" {
-		fmt.Println("missing required flags")
-		os.Exit(1)
-	}
 
 	// change this to true when in production
 	app.InProduction = *inProduction
@@ -108,12 +92,26 @@ func Run() (*driver.DB, error) {
 
 	// connect to database
 	log.Println("connecting to database...")
-	connectionString := fmt.Sprintf("host=%s port=%s dbname=%s user=%s password=%s sslmode=%s", *dbHost, *dbPort, *dbName, *dbUser, *dbPass, *dbSSL)
-	db, err := driver.ConnectSQL(connectionString)
+	log.Println("getting db url from environment...")
+	db_url := os.Getenv("DBURL")
+	if db_url == "" {
+		log.Println("missing required DBURL ENV")
+	}
+
+	if *dbURL != "" {
+		log.Println("setting database url from flag")
+		db_url = *dbURL
+	}
+	log.Println("database url:", db_url)
+
+	db, err := driver.ConnectSQL(db_url)
 	if err != nil {
 		log.Fatal("cannot connect to database! Dying...")
 	}
-	log.Println("connected to database!")
+
+	if err := db.SQL.Ping(); err != nil {
+		log.Println("connected to database!")
+	}
 
 	tc, err := render.CreateTemplateCache()
 	if err != nil {
@@ -129,10 +127,6 @@ func Run() (*driver.DB, error) {
 	handlers.NewHandlers(Repo)
 	render.NewRenderer(&app)
 	helpers.NewHelpers(&app)
-
-	// http.HandleFunc("/", handlers.Home)
-	// http.HandleFunc("/about", handlers.About)
-	// http.Handle("/static/*", http.StripPrefix("/static", http.FileServer(http.Dir("./static"))))
 
 	return db, nil
 }

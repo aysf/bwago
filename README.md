@@ -15,6 +15,13 @@ building modern web application with Go
 4. open browser `locahost:9000`
 5. login admin email `admin@here.com`, password `password`
 
+### Using Docker
+1. build image `docker build -t bwago:v1.0 .`  
+2. run container `docker run --rm --env-file ./.env -p 9020:9000 bwago:v1.0`
+
+### Using compose
+1. run `docker compose up`
+
 ## Tips
 
 ### Migrate down all steps
